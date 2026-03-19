@@ -212,11 +212,10 @@ public final class GeometryUtil {
       throw new AeriusException(ImaerExceptionReason.GEOMETRY_INVALID, String.valueOf(aeriusPolygon));
     }
     final LinearRing shell = toJtsLinearRing(geometryFactory, aeriusPolygon.getCoordinates()[0], aeriusPolygon);
-    final int numberOfShells = aeriusPolygon.getCoordinates().length - 1;
-    final LinearRing[] holes = new LinearRing[numberOfShells];
-    for (int i = 1; i <= numberOfShells; i++) {
-      final LinearRing hole = toJtsLinearRing(geometryFactory, aeriusPolygon.getCoordinates()[i], aeriusPolygon);
-      holes[i] = hole;
+    final int numberOfHoles = aeriusPolygon.getCoordinates().length - 1;
+    final LinearRing[] holes = new LinearRing[numberOfHoles];
+    for (int i = 0; i < numberOfHoles; i++) {
+      holes[i] = toJtsLinearRing(geometryFactory, aeriusPolygon.getCoordinates()[i + 1], aeriusPolygon);
     }
 
     return geometryFactory.createPolygon(shell, holes);

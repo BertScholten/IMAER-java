@@ -383,6 +383,7 @@ class RblCohesionValidatorTest {
 
     validateWarnings();
     validateErrors(ImaerExceptionReason.COHESION_DUPLICATE_DISPERSION_LINES);
+    assertArrayEquals(new Object[] {DEFAULT_POINT_ID, DEFAULT_ROAD_ID}, errors.get(0).getArgs(), "Error arguments for duplicate dispersion line");
   }
 
   @Test
@@ -415,6 +416,7 @@ class RblCohesionValidatorTest {
 
     validateWarnings();
     validateErrors(ImaerExceptionReason.COHESION_DUPLICATE_DISPERSION_LINES);
+    assertArrayEquals(new Object[] {DEFAULT_POINT_ID, DEFAULT_ROAD_ID}, errors.get(0).getArgs(), "Error arguments for duplicate dispersion line");
   }
 
   @Test

@@ -71,4 +71,18 @@ class GeometryCalculatorImplTest {
     assertEquals(0.0, calculator.determineMeasure(polygon));
   }
 
+  @Test
+  void testDetermineMeasurePolygonWithHole() {
+    final GeometryCalculator calculator = new GeometryCalculatorImpl();
+    final Polygon polygon = new Polygon();
+    // Outer ring: 100x100 square = area 10000
+    // Inner ring (hole): 50x50 square = area 2500
+    // Net area: 7500
+    polygon.setCoordinates(new double[][][] {
+        {{0, 0}, {0, 100}, {100, 100}, {100, 0}, {0, 0}},
+        {{25, 25}, {25, 75}, {75, 75}, {75, 25}, {25, 25}}
+    });
+    assertEquals(7500.0, calculator.determineMeasure(polygon));
+  }
+
 }

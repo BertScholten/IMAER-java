@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import nl.overheid.aerius.shared.domain.v2.geojson.Feature;
@@ -171,7 +172,7 @@ public class RblCohesionValidator {
     }
     final List<String> duplicateDispersionLineIds = determineDuplicates(tracker.dispersionLineIds);
     for (final String duplicateDispersionLineId : duplicateDispersionLineIds) {
-      final String[] idParts = duplicateDispersionLineId.split(ID_SEPARATOR);
+      final String[] idParts = duplicateDispersionLineId.split(Pattern.quote(ID_SEPARATOR));
       final String calculationPointId = idParts[0];
       final String segmentId = idParts[1];
       tracker.addError(new AeriusException(ImaerExceptionReason.COHESION_DUPLICATE_DISPERSION_LINES,
