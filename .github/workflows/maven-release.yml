@@ -36,20 +36,22 @@ jobs:
 
       - name: Set release version
         run: |
-          mvn --batch-mode versions:set \
+          mvn --batch-mode --no-transfer-progress \
             -DnewVersion=${{ github.event.inputs.release_version }} \
             -DgenerateBackupPoms=false \
             -Psonar \
-            -f source/pom.xml
+            -f source/pom.xml \
+            versions:set
 
       # At this point, all internal SNAPSHOT refs should be resolved and updated to the release version.
       # Any remaining SNAPSHOT are genuine external dependencies that should not be a snapshot.
       - name: Check for SNAPSHOT dependencies
         run: |
-          mvn --batch-mode enforcer:enforce \
+          mvn --batch-mode --no-transfer-progress \
           -Denforcer.rules=requireReleaseDeps \
           -Psonar \
-          -f source/pom.xml
+          -f source/pom.xml \
+           enforcer:enforce
 
       - name: Commit release version
         run: |
@@ -59,17 +61,18 @@ jobs:
 
       - name: Tag release commit
         run: |
-          git tag -a "${{ github.event.inputs.release_version }}" \
-            -m "Release ${{ github.event.inputs.release_version }}"
-          git push origin "${{ github.event.inputs.release_version }}"
+          gh release create ${{ github.event.inputs.release_version }} \
+            -t "Release ${{ github.event.inputs.release_version }}" \
+            --generate-notes
 
       - name: Set next development version
         run: |
-          mvn --batch-mode versions:set \
+          mvn --batch-mode --no-transfer-progress \
             -DnewVersion=${{ github.event.inputs.next_dev_version }} \
             -DgenerateBackupPoms=false \
             -Psonar \
-            -f source/pom.xml
+            -f source/pom.xml \
+            versions:set
 
       - name: Commit next development version
         run: |
