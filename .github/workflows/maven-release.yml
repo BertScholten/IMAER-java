@@ -60,6 +60,8 @@ jobs:
           git push origin HEAD
 
       - name: Tag release commit
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           gh release create ${{ github.event.inputs.release_version }} \
             -t "Release ${{ github.event.inputs.release_version }}" \
